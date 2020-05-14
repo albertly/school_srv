@@ -1,0 +1,185 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: test_ex_ts
+  description: My cool TypeScript app
+basePath: /api/v1
+tags:
+  - name: Examples
+    description: Simple example endpoints
+  - name: Specification
+    description: The swagger API specification
+  - name: Schools
+    description: School endpoints
+  - name: Classes
+    description: Class endpoints
+
+consumes:
+  - application/json
+produces:
+  - application/json
+
+
+definitions:
+
+  SchoolBody:
+      type: object
+      title: school
+      required:
+        - name
+        - logo
+        - motor
+      properties:
+        name:
+          type: string
+          example: school01
+        logo:
+          type: string
+          example: school01_logo
+        motor:
+          type: string
+          example: school01_motor
+
+  ClassBody:
+      type: object
+      title: class
+      required:
+        - schoolId
+        - className
+      properties:
+        schoolId:
+          type: string
+        className:
+          type: string
+          example: class name
+
+  ExampleBody:
+    type: object
+    title: example
+    required:
+      - name
+    properties:
+      name:
+        type: string
+        example: no_stress
+
+parameters:
+  schoolName:
+    name: schoolName
+    in: path
+    description: Name of a school
+    required: true
+    type: string 
+  schoolId:
+    name: schoolId
+    in: path
+    description: Id of a school
+    required: true
+    type: string                  
+paths:
+  /schools:
+    get:
+      tags:
+        - Schools
+      description: Fetch all schools
+      responses:
+        200:
+          description: Returns all schools    
+    post:
+      tags: 
+        - Schools
+      description: Create a new school
+      parameters:
+        - name: school
+          in: body
+          description: a school name
+          required: true
+          schema: 
+            $ref: "#/definitions/SchoolBody"
+      responses:
+        201:
+          description: returns a new school
+  /schools/{schoolName}:
+    get:
+      tags:
+        - Schools
+      description: Get a school by name
+      parameters:
+        - $ref: "#/parameters/schoolName"
+      responses:
+        200:
+          description: Get a school by name
+
+  /schools/{schoolId}/classes:
+      get:
+        tags:
+          - Classes
+        description: Get classes by  schoolId
+        parameters:
+          - $ref: "#/parameters/schoolId"
+        responses:
+          200:
+            description: Get classes by schoolId
+
+      post:
+        tags:
+          - Classes
+        description: Add class to school
+        parameters:
+        - $ref: "#/parameters/schoolId"
+        - name: className
+          in: body
+          description: a class name
+          required: true
+          schema: 
+            $ref: "#/definitions/ClassBody"
+        responses:
+          201:
+            description: returns a new class
+
+  /examples:
+    get:
+      tags:
+        - Examples
+      description: Fetch all examples
+      responses:
+        200:
+          description: Returns all examples
+    post:
+      tags:
+        - Examples
+      description: Create a new example
+      parameters:
+        - name: example
+          in: body
+          description: an example
+          required: true
+          schema: 
+            $ref: "#/definitions/ExampleBody"
+      responses:
+        200:
+          description: Returns all examples
+
+  /examples/{id}:
+    get:
+      tags:
+        - Examples
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the example to retrieve
+          type: integer
+      responses:
+        200:
+          description: Return the example with the specified id
+        404:
+          description: Example not found
+
+  /spec:
+    get:
+      tags:
+        - Specification
+      responses:
+        200:
+          description: Return the API specification

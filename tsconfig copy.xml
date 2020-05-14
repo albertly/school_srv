@@ -1,0 +1,23 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "target": "es6",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "typeRoots": ["node_modules/@types"],
+    "paths": {
+      "@models/*": [
+        "server/api/models/*"
+      ],
+      "@shared/*": [
+        "server/common/*"
+      ]
+    }
+  },
+  "include": ["typings.d.ts", "server/**/*.ts", "test/*.ts"],
+  "exclude": ["node_modules"]
+}
